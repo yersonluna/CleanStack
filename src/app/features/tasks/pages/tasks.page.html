@@ -1,0 +1,128 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>📋 My Tasks</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- 📋 Task Form Section -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>➕ Add New Task</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <form [formGroup]="taskForm">
+        <ion-item>
+          <ion-label position="floating">Task Title *</ion-label>
+          <ion-input
+            formControlName="title"
+            placeholder="Enter task title"
+            required
+          ></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="floating">Description</ion-label>
+          <ion-textarea
+            formControlName="description"
+            placeholder="Enter description (optional)"
+            rows="2"
+          ></ion-textarea>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="floating">Category *</ion-label>
+          <ion-select formControlName="categoryId" required>
+            <ion-select-option value="">
+              -- Select a category --
+            </ion-select-option>
+            <ion-select-option *ngFor="let cat of categories$ | async; trackBy: trackByTaskId" [value]="cat.id">
+              {{ cat.name }}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <ion-button
+          expand="block"
+          fill="solid"
+          color="primary"
+          (click)="addTask()"
+          [disabled]="taskForm.invalid || (isLoading() | async)"
+        >
+          ➕ Create Task
+        </ion-button>
+      </form>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- 🎯 Category Filter (Conditional) -->
+  <ion-card *ngIf="(featureFlags$ | async)?.enable_category_filter as enableFilter">
+    <ion-card-header>
+      <ion-card-title>🏷️ Filter by Category</ion-card-title>
+    </ion-card-header>
+    <ion-card-content *ngIf="enableFilter">
+      <ion-segment
+        (ionChange)="filterByCategory($event.detail.value)"
+        value="null"
+      >
+        <ion-segment-button value="null">
+          <ion-label>All Tasks</ion-label>
+        </ion-segment-button>
+        <ion-segment-button
+          *ngFor="let cat of categories$ | async; trackBy: trackByTaskId"
+          [value]="cat.id"
+        >
+          <ion-label>{{ cat.name }}</ion-label>
+        </ion-segment-button>
+      </ion-segment>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- 📋 Tasks List -->
+  <div *ngIf="!(showEmptyState() | async); else emptyState">
+    <ion-list>
+      <ion-list-header>
+        <ion-label>📌 Your Tasks</ion-label>
+      </ion-list-header>
+
+      <ion-item
+        *ngFor="let task of tasks$ | async; trackBy: trackByTaskId"
+        [ngClass]="{ 'completed-task': task.status === 'completed' }"
+      >
+        <ion-checkbox
+          [checked]="task.status === 'completed'"
+          (ionChange)="toggleComplete(task)"
+        ></ion-checkbox>
+
+        <ion-label>
+          <h2>{{ task.title }}</h2>
+          <p *ngIf="task.description">{{ task.description }}</p>
+          <small>📅 {{ task.createdAt | date: 'medium' }}</small>
+        </ion-label>
+
+        <ion-buttons slot="end">
+          <ion-button (click)="editTask(task)" color="primary" fill="clear">
+            ✏️
+          </ion-button>
+          <ion-button (click)="deleteTask(task)" color="danger" fill="clear">
+            🗑️
+          </ion-button>
+        </ion-buttons>
+      </ion-item>
+    </ion-list>
+  </div>
+
+  <!-- 🎨 Empty State -->
+  <ng-template #emptyState>
+    <ion-card class="empty-state">
+      <ion-card-content>
+        <ion-icon name="checkbox-outline" size="large"></ion-icon>
+        <h2>📭 No tasks yet</h2>
+        <p>Create your first task to get started!</p>
+      </ion-card-content>
+    </ion-card>
+  </ng-template>
+
+  <!-- ⚠️ Loading State -->
+  <ion-spinner *ngIf="isLoading()"></ion-spinner>
+</ion-content>
