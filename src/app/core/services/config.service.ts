@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 // 🚩 Feature Flags Configuration - Contains all available feature flags
 export interface FeatureFlags {
@@ -65,9 +66,9 @@ export class ConfigService {
       // await remoteConfig.fetchAndActivate();
       // const flags = this.mapRemoteConfigToFlags(remoteConfig);
       // this.featureFlagsSubject.next(flags);
-      console.log('✅ Feature flags refreshed');
+      console.log('Feature flags refreshed');
     } catch (error) {
-      console.error('❌ Failed to refresh feature flags:', error);
+      console.error('Failed to refresh feature flags:', error);
     }
   }
 
@@ -94,13 +95,9 @@ export class ConfigService {
    * @returns Observable of the flag value
    */
   getFlag$<K extends keyof FeatureFlags>(flagName: K): Observable<boolean> {
-    return new Observable((subscriber) => {
-      subscriber.next(this.featureFlagsSubject.value[flagName]);
-      const sub = this.featureFlagsSubject.subscribe((flags) => {
-        subscriber.next(flags[flagName]);
-      });
-      return () => sub.unsubscribe();
-    });
+    return this.featureFlagsSubject.pipe(
+      map((flags) => flags[flagName])
+    );
   }
 
   /**

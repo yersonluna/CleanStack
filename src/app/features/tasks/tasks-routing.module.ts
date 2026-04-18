@@ -4,7 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { TasksPage } from './pages/tasks.page';
 
 /**
- * 🛣️ Tasks Routes Configuration
+ * Tasks Routes Configuration
  */
 const routes: Routes = [
   {
@@ -14,7 +14,7 @@ const routes: Routes = [
 ];
 
 /**
- * 🛣️ Tasks Routing Module - Configures lazy loading routes for tasks
+ * Tasks Routing Module - Configures lazy loading routes for tasks
  */
 @NgModule({
   imports: [RouterModule.forChild(routes)],

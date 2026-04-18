@@ -6,7 +6,7 @@ import { StorageService } from '@app/core/services';
 import { CategoryService } from '../../categories/services/category.service';
 
 /**
- * 📋 Task Service - Business logic for task management
+ * Task Service - Business logic for task management
  * Handles CRUD operations, filtering, and reactive state management
  */
 @Injectable({
@@ -15,15 +15,15 @@ import { CategoryService } from '../../categories/services/category.service';
 export class TaskService {
   private readonly STORAGE_KEY = 'tasks';
 
-  // 🔄 BehaviorSubject to share task state across the app
+  // BehaviorSubject to share task state across the app
   private tasksSubject = new BehaviorSubject<Task[]>([]);
   public tasks$: Observable<Task[]> = this.tasksSubject.asObservable();
 
-  // 🔍 Filter state - currently selected category
+  // Filter state - currently selected category
   private selectedCategorySubject = new BehaviorSubject<string | null>(null);
   public selectedCategory$ = this.selectedCategorySubject.asObservable();
 
-  // 📊 Computed: Filtered tasks observable
+  // Computed: Filtered tasks observable
   public filteredTasks$: Observable<Task[]> = combineLatest([
     this.tasks$,
     this.selectedCategory$,
@@ -41,7 +41,7 @@ export class TaskService {
   }
 
   /**
-   * 📂 Load all tasks from storage
+   * Load all tasks from storage
    * Called on service initialization and after CRUD operations
    */
   private loadTasks(): void {
@@ -57,21 +57,21 @@ export class TaskService {
   }
 
   /**
-   * ➕ Create a new task
+   * Create a new task
    * @param dto - Create task data
    * @returns The created task or null if validation fails
    */
   create(dto: CreateTaskDTO): Task | null {
     // Validation: Check if title is empty
     if (!dto.title || dto.title.trim().length === 0) {
-      console.error('❌ Task title cannot be empty');
+      console.error('Task title cannot be empty');
       return null;
     }
 
     // Validation: Check if category exists
     const category = this.categoryService.getById(dto.categoryId);
     if (!category) {
-      console.error('❌ Category not found');
+      console.error('Category not found');
       return null;
     }
 
@@ -91,12 +91,12 @@ export class TaskService {
     this.tasksSubject.next(updated);
     this.updateCategoryCounts();
 
-    console.log(`✅ Task created: ${newTask.title}`);
+    console.log(`Task created: ${newTask.title}`);
     return newTask;
   }
 
   /**
-   * 👁️ Get a task by ID
+   * Get a task by ID
    * @param id - Task ID
    * @returns The task or null if not found
    */
@@ -105,7 +105,7 @@ export class TaskService {
   }
 
   /**
-   * 🔍 Get all tasks
+   * Get all tasks
    * @returns Array of all tasks
    */
   getAll(): Task[] {
@@ -113,7 +113,7 @@ export class TaskService {
   }
 
   /**
-   * ✏️ Update a task
+   * Update a task
    * @param id - Task ID
    * @param dto - Update data
    * @returns The updated task or null if failed
@@ -121,7 +121,7 @@ export class TaskService {
   update(id: string, dto: UpdateTaskDTO): Task | null {
     const index = this.tasksSubject.value.findIndex((t) => t.id === id);
     if (index === -1) {
-      console.error('❌ Task not found');
+      console.error('Task not found');
       return null;
     }
 
@@ -129,7 +129,7 @@ export class TaskService {
 
     // Validation: If updating categoryId, check if category exists
     if (dto.categoryId && !this.categoryService.getById(dto.categoryId)) {
-      console.error('❌ Category not found');
+      console.error('Category not found');
       return null;
     }
 
@@ -155,12 +155,12 @@ export class TaskService {
     this.tasksSubject.next(updated);
     this.updateCategoryCounts();
 
-    console.log(`✅ Task updated: ${updated[index].title}`);
+    console.log(`Task updated: ${updated[index].title}`);
     return updated[index];
   }
 
   /**
-   * ✅ Mark task as completed
+   * Mark task as completed
    * @param id - Task ID
    * @returns true if successful
    */
@@ -174,7 +174,7 @@ export class TaskService {
   }
 
   /**
-   * ↩️ Reopen a completed task
+   * Reopen a completed task
    * @param id - Task ID
    * @returns true if successful
    */
@@ -188,7 +188,7 @@ export class TaskService {
   }
 
   /**
-   * 🗑️ Delete a task
+   * Delete a task
    * @param id - Task ID
    * @returns true if successful
    */
@@ -198,12 +198,12 @@ export class TaskService {
     this.tasksSubject.next(updated);
     this.updateCategoryCounts();
 
-    console.log('✅ Task deleted');
+    console.log('Task deleted');
     return true;
   }
 
   /**
-   * 📊 Get tasks by status
+   * Get tasks by status
    * @param status - Task status filter
    * @returns Observable of tasks with given status
    */
@@ -214,7 +214,7 @@ export class TaskService {
   }
 
   /**
-   * 📂 Get tasks by category
+   * Get tasks by category
    * @param categoryId - Category ID
    * @returns Observable of tasks in given category
    */
@@ -225,7 +225,7 @@ export class TaskService {
   }
 
   /**
-   * 🔍 Search tasks by title or description
+   * Search tasks by title or description
    * @param searchTerm - Search term
    * @returns Observable of filtered tasks
    */
@@ -243,7 +243,7 @@ export class TaskService {
   }
 
   /**
-   * 🎯 Set active category filter
+   * Set active category filter
    * @param categoryId - Category ID to filter by (null to clear filter)
    */
   setFilter(categoryId: string | null): void {
@@ -251,7 +251,7 @@ export class TaskService {
   }
 
   /**
-   * 📊 Get tasks count by status
+   * Get tasks count by status
    * @returns Object with counts for each status
    */
   getTaskCounts(): { pending: number; completed: number } {
@@ -263,7 +263,7 @@ export class TaskService {
   }
 
   /**
-   * 🔄 Update category task counts
+   * Update category task counts
    * Should be called after any task modification
    */
   private updateCategoryCounts(): void {
@@ -279,7 +279,7 @@ export class TaskService {
   }
 
   /**
-   * 🆔 Generate unique ID for new task
+   * Generate unique ID for new task
    * @returns Generated UUID
    */
   private generateId(): string {

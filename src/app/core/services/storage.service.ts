@@ -19,7 +19,7 @@ export class StorageService {
       }
       return JSON.parse(item) as T;
     } catch (error) {
-      console.error(`❌ Error reading from storage (key: ${key}):`, error);
+      console.error(`Error reading from storage (key: ${key}):`, error);
       return null;
     }
   }
@@ -35,7 +35,7 @@ export class StorageService {
       localStorage.setItem(key, JSON.stringify(value));
       return true;
     } catch (error) {
-      console.error(`❌ Error writing to storage (key: ${key}):`, error);
+      console.error(`Error writing to storage (key: ${key}):`, error);
       return false;
     }
   }
@@ -50,7 +50,7 @@ export class StorageService {
       localStorage.removeItem(key);
       return true;
     } catch (error) {
-      console.error(`❌ Error removing from storage (key: ${key}):`, error);
+      console.error(`Error removing from storage (key: ${key}):`, error);
       return false;
     }
   }
@@ -64,7 +64,7 @@ export class StorageService {
       localStorage.clear();
       return true;
     } catch (error) {
-      console.error('❌ Error clearing storage:', error);
+      console.error('Error clearing storage:', error);
       return false;
     }
   }

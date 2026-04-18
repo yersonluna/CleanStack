@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { TimeAgoPipe } from './time-ago.pipe';
 
-// 🧪 Time Ago Pipe Tests
+// Time Ago Pipe Tests
 describe('TimeAgoPipe', () => {
   let pipe: TimeAgoPipe;
 

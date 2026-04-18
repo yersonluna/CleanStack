@@ -3,7 +3,7 @@ import { TaskService } from './task.service';
 import { StorageService } from '@app/core/services/storage.service';
 import { CategoryService } from '../../categories/services/category.service';
 
-// 🧪 Task Service Tests
+// Task Service Tests
 describe('TaskService', () => {
   let service: TaskService;
   let storageServiceSpy: jasmine.SpyObj<StorageService>;
@@ -21,6 +21,17 @@ describe('TaskService', () => {
       'updateTaskCount',
     ]);
 
+    // Set up spy behaviors before injecting
+    storageSpy.getItem.and.returnValue(null);
+    categorySpy.getById.and.returnValue({
+      id: 'cat1',
+      name: 'Test',
+      color: '#000000',
+      createdAt: new Date(),
+    });
+    categorySpy.getAll.and.returnValue([]);
+    categorySpy.updateTaskCount.and.stub();
+
     TestBed.configureTestingModule({
       providers: [
         TaskService,
@@ -36,14 +47,6 @@ describe('TaskService', () => {
     categoryServiceSpy = TestBed.inject(
       CategoryService
     ) as jasmine.SpyObj<CategoryService>;
-
-    storageSpy.getItem.and.returnValue(null);
-    categorySpy.getById.and.returnValue({
-      id: 'cat1',
-      name: 'Test',
-      color: '#000000',
-      createdAt: new Date(),
-    });
   });
 
   it('should be created', () => {

@@ -1,7 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 /**
- * 📅 Time Ago Pipe - Formats dates relative to now
+ * Time Ago Pipe - Formats dates relative to now
  * Examples: "2 minutes ago", "1 day ago", "just now"
  */
 @Pipe({

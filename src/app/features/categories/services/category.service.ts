@@ -44,7 +44,7 @@ export class CategoryService {
   create(dto: CreateCategoryDTO): Category | null {
     // Validation: Check if name is empty
     if (!dto.name || dto.name.trim().length === 0) {
-      console.error('❌ Category name cannot be empty');
+      console.error('Category name cannot be empty');
       return null;
     }
 
@@ -53,7 +53,7 @@ export class CategoryService {
       (c) => c.name.toLowerCase() === dto.name.toLowerCase()
     );
     if (exists) {
-      console.error('❌ Category name already exists');
+      console.error('Category name already exists');
       return null;
     }
 
@@ -71,7 +71,7 @@ export class CategoryService {
     this.storageService.setItem(this.STORAGE_KEY, updated);
     this.categoriesSubject.next(updated);
 
-    console.log(`✅ Category created: ${newCategory.name}`);
+    console.log(`Category created: ${newCategory.name}`);
     return newCategory;
   }
 
@@ -101,7 +101,7 @@ export class CategoryService {
   update(id: string, dto: UpdateCategoryDTO): Category | null {
     const index = this.categoriesSubject.value.findIndex((c) => c.id === id);
     if (index === -1) {
-      console.error('❌ Category not found');
+      console.error('Category not found');
       return null;
     }
 
@@ -114,7 +114,7 @@ export class CategoryService {
           c.id !== id && c.name.toLowerCase() === dto.name!.toLowerCase()
       );
       if (nameExists) {
-        console.error('❌ Category name already exists');
+        console.error('Category name already exists');
         return null;
       }
     }
@@ -134,7 +134,7 @@ export class CategoryService {
     this.storageService.setItem(this.STORAGE_KEY, updated);
     this.categoriesSubject.next(updated);
 
-    console.log(`✅ Category updated: ${updated[index].name}`);
+    console.log(`Category updated: ${updated[index].name}`);
     return updated[index];
   }
 
@@ -154,7 +154,7 @@ export class CategoryService {
 
     if (hasActiveTasks) {
       console.error(
-        '❌ Cannot delete category: it has pending tasks associated'
+        'Cannot delete category: it has pending tasks associated'
       );
       return false;
     }
@@ -163,7 +163,7 @@ export class CategoryService {
     this.storageService.setItem(this.STORAGE_KEY, updated);
     this.categoriesSubject.next(updated);
 
-    console.log('✅ Category deleted');
+    console.log('Category deleted');
     return true;
   }
 

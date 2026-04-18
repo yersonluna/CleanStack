@@ -6,7 +6,7 @@ import { EmptyStateComponent } from './components/empty-state/empty-state.compon
 import { TimeAgoPipe } from './pipes/time-ago.pipe';
 
 /**
- * 📦 Shared Module - Exports reusable components, pipes, and services
+ * Shared Module - Exports reusable components, pipes, and services
  * Provides shared UI elements and utilities across features
  */
 @NgModule({
