@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "752129441007",
+    "project_id": "cleanstack-task-manager",
+    "storage_bucket": "cleanstack-task-manager.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:752129441007:android:8b8819ff01efb7960c6f1a",
+        "android_client_info": {
+          "package_name": "com.yersonluna.cleanstack"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAleB9wrNJ0DS3T33FAyDsvwPw8TAbq8P0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
