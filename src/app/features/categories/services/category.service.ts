@@ -6,7 +6,7 @@ import {
   CreateCategoryDTO,
   UpdateCategoryDTO,
 } from '@app/shared/models';
-import { StorageService } from '../services/storage.service';
+import { StorageService } from '@app/core/services';
 
 /**
  * 🏷️ Category Service - Business logic for category management

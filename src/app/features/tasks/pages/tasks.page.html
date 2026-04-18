@@ -36,7 +36,7 @@
             <ion-select-option value="">
               -- Select a category --
             </ion-select-option>
-            <ion-select-option *ngFor="let cat of categories$ | async; trackBy: trackByTaskId" [value]="cat.id">
+            <ion-select-option *ngFor="let cat of categories$ | async; trackBy: trackByCategoryId" [value]="cat.id">
               {{ cat.name }}
             </ion-select-option>
           </ion-select>
@@ -47,7 +47,7 @@
           fill="solid"
           color="primary"
           (click)="addTask()"
-          [disabled]="taskForm.invalid || (isLoading() | async)"
+          [disabled]="taskForm.invalid || loading"
         >
           ➕ Create Task
         </ion-button>
@@ -62,14 +62,14 @@
     </ion-card-header>
     <ion-card-content *ngIf="enableFilter">
       <ion-segment
-        (ionChange)="filterByCategory($event.detail.value)"
+        (ionChange)="filterByCategory($event.detail.value || null)"
         value="null"
       >
         <ion-segment-button value="null">
           <ion-label>All Tasks</ion-label>
         </ion-segment-button>
         <ion-segment-button
-          *ngFor="let cat of categories$ | async; trackBy: trackByTaskId"
+          *ngFor="let cat of categories$ | async; trackBy: trackByCategoryId"
           [value]="cat.id"
         >
           <ion-label>{{ cat.name }}</ion-label>
@@ -79,7 +79,7 @@
   </ion-card>
 
   <!-- 📋 Tasks List -->
-  <div *ngIf="!(showEmptyState() | async); else emptyState">
+  <div *ngIf="!showEmptyState(); else emptyState">
     <ion-list>
       <ion-list-header>
         <ion-label>📌 Your Tasks</ion-label>

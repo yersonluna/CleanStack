@@ -107,7 +107,8 @@ export class ConfigService {
    * 🔧 Update feature flags (for testing or manual override)
    * @param flags - Partial feature flags to merge
    */
-  setFlags(flags: Partial<FeatureFlags>): void {\n    const currentFlags = this.featureFlagsSubject.value;
+  setFlags(flags: Partial<FeatureFlags>): void {
+    const currentFlags = this.featureFlagsSubject.value;
     this.featureFlagsSubject.next({
       ...currentFlags,
       ...flags,

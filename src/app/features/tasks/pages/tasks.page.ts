@@ -9,9 +9,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastController } from '@ionic/angular';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { Task } from '@app/shared/models';
+import { Task, Category } from '@app/shared/models';
 import { TaskService } from '../services/task.service';
-import { ConfigService } from '@app/core/services/config.service';
+import { ConfigService } from '@app/core/services';
+import { CategoryService } from '../../categories/services/category.service';
 
 /**
  * 📋 Tasks Page Component - Main container for task management
@@ -33,8 +34,13 @@ import { ConfigService } from '@app/core/services/config.service';
 export class TasksPage implements OnInit, OnDestroy {
   // 📋 Observables from services
   tasks$ = this.taskService.filteredTasks$;
-  categories$ = this.taskService.tags; // TODO: Integrate with CategoryService
+  categories$ = this.categoryService.categories$;
   featureFlags$ = this.configService.featureFlags$;
+
+  // Helper state computed from signal
+  get loading(): boolean {
+    return this.isLoading();
+  }
 
   // 📝 Form for creating new task
   taskForm!: FormGroup;
@@ -50,6 +56,7 @@ export class TasksPage implements OnInit, OnDestroy {
   constructor(
     private taskService: TaskService,
     private configService: ConfigService,
+    private categoryService: CategoryService,
     private fb: FormBuilder,
     private toastController: ToastController
   ) {
@@ -150,15 +157,23 @@ export class TasksPage implements OnInit, OnDestroy {
   /**
    * 🎯 Filter tasks by category
    */
-  filterByCategory(categoryId: string | null): void {
-    this.taskService.setFilter(categoryId);
+  filterByCategory(categoryId: string | number | null | undefined): void {
+    const id = categoryId === 'null' || categoryId == null ? null : String(categoryId);
+    this.taskService.setFilter(id);
   }
 
   /**
-   * 🔍 Track by function for ngFor optimization
+   * 🔍 Track by function for ngFor optimization (Tasks)
    */
   trackByTaskId(index: number, task: Task): string {
     return task.id;
+  }
+
+  /**
+   * 🔍 Track by function for ngFor optimization (Categories)
+   */
+  trackByCategoryId(index: number, category: Category): string {
+    return category.id;
   }
 
   /**
@@ -182,3 +197,4 @@ export class TasksPage implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 }
+

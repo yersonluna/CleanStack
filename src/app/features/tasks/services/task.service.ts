@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Task, CreateTaskDTO, UpdateTaskDTO, TaskStatus } from '@app/shared/models';
-import { StorageService } from '@app/core/services/storage.service';
-import { CategoryService } from '../categories/services/category.service';
+import { StorageService } from '@app/core/services';
+import { CategoryService } from '../../categories/services/category.service';
 
 /**
  * 📋 Task Service - Business logic for task management
