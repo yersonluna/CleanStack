@@ -1,4 +1,5 @@
 import { TestBed } from '@angular/core/testing';
+import { take } from 'rxjs/operators';
 import { ConfigService, FeatureFlags } from './config.service';
 
 // Config Service Tests - Validates feature flag management
@@ -68,24 +69,26 @@ describe('ConfigService', () => {
 
   describe('getFlag$', () => {
     it('should return observable of flag value', (done) => {
-      const subscription = service.getFlag$('enable_category_filter').subscribe((value) => {
-        expect(value).toBe(true);
-        subscription.unsubscribe();
-        done();
-      });
+      service.getFlag$('enable_category_filter')
+        .pipe(take(1))
+        .subscribe((value) => {
+          expect(value).toBe(true);
+          done();
+        });
     });
 
     it('should emit new values when flags change', (done) => {
       const values: boolean[] = [];
 
-      const subscription = service.getFlag$('enable_task_priority').subscribe((value) => {
-        values.push(value);
-        if (values.length === 2) {
-          expect(values).toEqual([false, true]);
-          subscription.unsubscribe();
-          done();
-        }
-      });
+      service.getFlag$('enable_task_priority')
+        .pipe(take(2))
+        .subscribe((value) => {
+          values.push(value);
+          if (values.length === 2) {
+            expect(values).toEqual([false, true]);
+            done();
+          }
+        });
 
       service.setFlags({ enable_task_priority: true });
     });

@@ -3,6 +3,7 @@
   "compileOnSave": false,
   "compilerOptions": {
     "baseUrl": "./",
+    "rootDir": "./src",
     "paths": {
       "@app/*": ["src/app/*"]
     },
@@ -15,9 +16,8 @@
     "noFallthroughCasesInSwitch": true,
     "sourceMap": true,
     "declaration": false,
-    "downlevelIteration": true,
     "experimentalDecorators": true,
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "importHelpers": true,
     "target": "es2022",
     "module": "es2020",
@@ -26,7 +26,10 @@
       "dom"
     ],
     "skipLibCheck": true,
-    "useDefineForClassFields": false
+    "useDefineForClassFields": false,
+    "types": [
+      "jasmine"
+    ]
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
