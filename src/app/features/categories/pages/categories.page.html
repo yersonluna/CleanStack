@@ -1,0 +1,114 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>🏷️ Categories</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- 📝 Category Form Section -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>➕ Create Category</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <form [formGroup]="categoryForm">
+        <ion-item>
+          <ion-label position="floating">Category Name *</ion-label>
+          <ion-input
+            formControlName="name"
+            placeholder="Enter category name"
+            required
+          ></ion-input>
+        </ion-item>
+
+        <!-- 🎨 Color Picker -->
+        <div class="color-picker">
+          <label>🎨 Select Color</label>
+          <div class="color-options">
+            <button
+              *ngFor="let color of COLORS"
+              type="button"
+              class="color-btn"
+              [style.background-color]="color"
+              [class.selected]="categoryForm.get('color')?.value === color"
+              (click)="setColor(color)"
+              [attr.aria-label]="'Select color ' + color"
+            ></button>
+          </div>
+          <ion-item>
+            <ion-input
+              formControlName="color"
+              placeholder="#FF5733"
+              required
+            ></ion-input>
+          </ion-item>
+        </div>
+
+        <ion-button
+          expand="block"
+          fill="solid"
+          color="primary"
+          (click)="addCategory()"
+          [disabled]="categoryForm.invalid || (isLoading())"
+        >
+          ➕ Create Category
+        </ion-button>
+      </form>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- 📋 Categories List -->
+  <div *ngIf="!(showEmptyState()); else emptyState">
+    <ion-list>
+      <ion-list-header>
+        <ion-label>📌 Your Categories</ion-label>
+      </ion-list-header>
+
+      <ion-item *ngFor="let category of categories$ | async; trackBy: trackByCategoryId">
+        <!-- 🎨 Color Badge -->
+        <ion-badge
+          slot="start"
+          [style.background-color]="category.color"
+          class="color-badge"
+        >
+        </ion-badge>
+
+        <ion-label>
+          <h2>{{ category.name }}</h2>
+          <p *ngIf="category.taskCount">
+            {{ category.taskCount }} active
+            {{ category.taskCount === 1 ? 'task' : 'tasks' }}
+          </p>
+          <small>📅 {{ category.createdAt | date: 'short' }}</small>
+        </ion-label>
+
+        <ion-buttons slot="end">
+          <ion-button (click)="editCategory(category)" color="primary" fill="clear">
+            ✏️
+          </ion-button>
+          <ion-button
+            (click)="deleteCategory(category)"
+            color="danger"
+            fill="clear"
+          >
+            🗑️
+          </ion-button>
+        </ion-buttons>
+      </ion-item>
+    </ion-list>
+  </div>
+
+  <!-- 🎨 Empty State -->
+  <ng-template #emptyState>
+    <ion-card class="empty-state">
+      <ion-card-content>
+        <ion-icon name="pricetag-outline" size="large"></ion-icon>
+        <h2>🏷️ No categories yet</h2>
+        <p>Create your first category to organize your tasks!</p>
+      </ion-card-content>
+    </ion-card>
+  </ng-template>
+
+  <!-- ⚠️ Loading State -->
+  <ion-spinner *ngIf="isLoading()"></ion-spinner>
+</ion-content>

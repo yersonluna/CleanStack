@@ -7,8 +7,18 @@ const routes: Routes = [
     loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
   },
   {
+    path: 'tasks',
+    loadChildren: () => import('./features/tasks/tasks.module').then(m => m.TasksModule),
+    data: { title: '📋 Tasks' }
+  },
+  {
+    path: 'categories',
+    loadChildren: () => import('./features/categories/categories.module').then(m => m.CategoriesModule),
+    data: { title: '🏷️ Categories' }
+  },
+  {
     path: '',
-    redirectTo: 'home',
+    redirectTo: 'tasks',
     pathMatch: 'full'
   },
 ];
